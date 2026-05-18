@@ -53,13 +53,12 @@
     const SB_URL = 'https://idbijgtjinbtrdjjyxwj.supabase.co';
     const SB_KEY = 'sb_publishable_nJWpFtSfDsq45ccKdzv7Uw_FxwNGy2Q';
     
-    // Создаём клиент с уникальным именем
-   const sbClient = supabase.createClient(SB_URL, SB_KEY);
+    // Исправлено: supabase (глобальная переменная от библиотеки)
+    const sbClient = supabase.createClient(SB_URL, SB_KEY);
     
     let currentUser = null;
     let currentLang = 'ru';
     
-    // Отладочная панель
     function log(msg) {
         let dbg = document.getElementById('debug');
         if (!dbg) {
@@ -73,32 +72,24 @@
         console.log(msg);
     }
     
-    log('✅ Скрипт загружен');
-    log('Supabase URL: ' + SB_URL);
+    log('✅ Скрипт загружен, Supabase клиент создан');
     
-    // === ПЕРЕВОДЫ ===
     const translations = {
         ru: { home: "Главная", blog: "Блог", book: "Запись", cabinet: "Личный кабинет", login: "Вход", logout: "Выход", name: "Имя", phone: "Телефон", email: "Email", password: "Пароль", register: "Регистрация", no_acc: "Нет аккаунта?", welcome: "ГАРМОНИЯ БРОВИ & РЕСНИЦЫ", sub: "Студия восстановления", service1: "Аппаратное восстановление", service2: "Ламинирование бровей", service3: "Ламинирование ресниц", book_btn: "Записаться сейчас" },
         en: { home: "Home", blog: "Blog", book: "Booking", cabinet: "My cabinet", login: "Login", logout: "Logout", name: "Name", phone: "Phone", email: "Email", password: "Password", register: "Sign up", no_acc: "No account?", welcome: "HARMONY BROWS & LASHES", sub: "Restoration studio", service1: "Hardware restoration", service2: "Brow lamination", service3: "Lash lamination", book_btn: "Book now" }
     };
     function t(key) { return translations[currentLang][key] || key; }
     
-    // === ЗАГРУЗКА ПОЛЬЗОВАТЕЛЯ ===
     async function loadUser() {
-        log('loadUser() вызвана');
+        log('loadUser()');
         const { data: { user }, error } = await sbClient.auth.getUser();
-        if (error) {
-            log('Ошибка: ' + error.message);
-            currentUser = null;
-        } else if (user) {
+        if (error) { log('Ошибка: ' + error.message); currentUser = null; }
+        else if (user) {
             log('Пользователь: ' + user.email);
             const { data: prof } = await sbClient.from('users').select('*').eq('email', user.email).single();
             currentUser = prof;
             log('Роль: ' + (currentUser?.role || 'нет'));
-        } else {
-            currentUser = null;
-            log('Не авторизован');
-        }
+        } else { currentUser = null; log('Не авторизован'); }
         
         const logged = !!currentUser;
         document.getElementById('cabinetBtn').style.display = logged ? 'inline-block' : 'none';
@@ -107,15 +98,13 @@
         document.getElementById('logoutBtn').style.display = logged ? 'inline-block' : 'none';
     }
     
-    // === ВЫХОД ===
     window.logout = async () => {
         await sbClient.auth.signOut();
         await loadUser();
         navigate('home');
-        log('Выход выполнен');
+        log('Выход');
     };
     
-    // === СТРАНИЦЫ ===
     async function homePage() {
         document.getElementById('app').innerHTML = `
             <h2 style="color:#1e422a;">✨ ${t('welcome')}</h2>
@@ -133,27 +122,23 @@
             <button class="btn" id="bookBtnMain">${t('book_btn')} →</button>
         `;
         document.getElementById('bookBtnMain')?.onclick = () => navigate('booking');
-        log('Главная отрендерена');
+        log('Главная');
     }
     
     async function blogPage() {
-        document.getElementById('app').innerHTML = `<h2>📖 ${t('blog')}</h2><p>Скоро здесь будут статьи о восстановлении бровей и ресниц.</p>`;
-        log('Блог отрендерен');
+        document.getElementById('app').innerHTML = `<h2>📖 ${t('blog')}</h2><p>Скоро статьи о восстановлении бровей и ресниц.</p>`;
+        log('Блог');
     }
     
     async function bookingPage() {
-        if (!currentUser) {
-            alert('Нужно войти');
-            navigate('login');
-            return;
-        }
+        if (!currentUser) { alert('Нужно войти'); navigate('login'); return; }
         document.getElementById('app').innerHTML = `
             <h2>✎ ${t('book')}</h2>
-            <p>Вы авторизованы как: ${currentUser.email}</p>
+            <p>Вы авторизованы: ${currentUser.email}</p>
             <button class="btn" id="testBook">✅ Тест записи</button>
         `;
-        document.getElementById('testBook')?.onclick = () => alert('Тест: запись работает');
-        log('Запись отрендерена');
+        document.getElementById('testBook')?.onclick = () => alert('Тест: кнопка работает');
+        log('Запись');
     }
     
     async function cabinetPage() {
@@ -166,7 +151,7 @@
             <button class="btn" id="newBookBtn">➕ ${t('book_btn')}</button>
         `;
         document.getElementById('newBookBtn')?.onclick = () => navigate('booking');
-        log('Кабинет отрендерен');
+        log('Кабинет');
     }
     
     async function loginPage() {
@@ -188,7 +173,7 @@
             else { await loadUser(); navigate('home'); }
         };
         document.getElementById('regBtn').onclick = () => navigate('register');
-        log('Логин отрендерен');
+        log('Логин');
     }
     
     async function registerPage() {
@@ -216,19 +201,15 @@
                 navigate('login');
             }
         };
-        log('Регистрация отрендерена');
+        log('Регистрация');
     }
     
     async function adminPage() {
-        if (!currentUser || currentUser.role !== 'admin') {
-            navigate('home');
-            return;
-        }
+        if (!currentUser || currentUser.role !== 'admin') { navigate('home'); return; }
         document.getElementById('app').innerHTML = `<h2>👑 Админ</h2><p>Панель управления</p>`;
-        log('Админка отрендерена');
+        log('Админка');
     }
     
-    // === НАВИГАЦИЯ ===
     window.navigate = async (page) => {
         log('Переход: ' + page);
         if (page === 'home') await homePage();
@@ -240,7 +221,6 @@
         else if (page === 'admin') await adminPage();
     };
     
-    // === ПРИВЯЗКА КНОПОК ===
     document.getElementById('homeBtn').onclick = () => navigate('home');
     document.getElementById('blogBtn').onclick = () => navigate('blog');
     document.getElementById('bookingBtn').onclick = () => navigate('booking');
@@ -254,9 +234,8 @@
         navigate('home');
     };
     
-    // СТАРТ
     loadUser().then(() => navigate('home'));
-    log('✅ Всё готово, обработчики установлены');
+    log('✅ Готово');
 </script>
 </body>
 </html>
