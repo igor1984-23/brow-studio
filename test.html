@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Тест кнопок</title>
+    <style>
+        body { font-family: sans-serif; padding: 40px; background: #1e422a; color: #c7ab6e; }
+        button { background: #c7ab6e; color: #1e422a; border: none; padding: 10px 20px; margin: 10px; border-radius: 30px; cursor: pointer; font-size: 16px; }
+        .active { background: #2a5a3c; color: white; }
+    </style>
+</head>
+<body>
+    <h1>Тест кнопок</h1>
+    <button id="authBtn">ВХОД</button>
+    <button id="cabinetBtn" style="display:none">ЛИЧНЫЙ КАБИНЕТ</button>
+    <button id="adminBtn" style="display:none">АДМИН</button>
+    <button id="logoutBtn" style="display:none">ВЫЙТИ</button>
+    <button id="testReg">ТЕСТ РЕГИСТРАЦИИ</button>
+    <div id="status"></div>
+
+    <script>
+        // Простая имитация входа
+        let loggedIn = false;
+
+        document.getElementById('authBtn').onclick = () => {
+            loggedIn = true;
+            document.getElementById('status').innerHTML = '✅ Вы вошли (тестовый режим)';
+            document.getElementById('authBtn').style.display = 'none';
+            document.getElementById('cabinetBtn').style.display = 'inline-block';
+            document.getElementById('logoutBtn').style.display = 'inline-block';
+        };
+
+        document.getElementById('cabinetBtn').onclick = () => {
+            alert('Личный кабинет (тест)');
+        };
+
+        document.getElementById('logoutBtn').onclick = () => {
+            loggedIn = false;
+            document.getElementById('status').innerHTML = '❌ Вы вышли';
+            document.getElementById('authBtn').style.display = 'inline-block';
+            document.getElementById('cabinetBtn').style.display = 'none';
+            document.getElementById('logoutBtn').style.display = 'none';
+            document.getElementById('adminBtn').style.display = 'none';
+        };
+
+        document.getElementById('testReg').onclick = () => {
+            alert('Форма регистрации появится здесь. Сейчас это тест.');
+        };
+    </script>
+</body>
+</html>
