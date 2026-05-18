@@ -54,7 +54,7 @@
     const SB_KEY = 'sb_publishable_nJWpFtSfDsq45ccKdzv7Uw_FxwNGy2Q';
     
     // Создаём клиент с уникальным именем
-    const sbClient = supabaseJs.createClient(SB_URL, SB_KEY);
+   const sbClient = supabase.createClient(SB_URL, SB_KEY);
     
     let currentUser = null;
     let currentLang = 'ru';
