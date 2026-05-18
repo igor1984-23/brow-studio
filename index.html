@@ -2,240 +2,238 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Гармония — Брови и Ресницы</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #c7ab6e; font-family: 'Georgia', 'Times New Roman', serif; color: #1e422a; line-height: 1.5; }
-        .container { max-width: 1300px; margin: 0 auto; padding: 20px; }
-        .header { background: #1e422a; padding: 25px 20px; border-radius: 0 0 40px 40px; text-align: center; }
-        .logo-img { max-width: 320px; width: 85%; height: auto; display: inline-block; }
-        .nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; margin-top: 20px; }
-        .nav button { background: transparent; border: 2px solid #c7ab6e; padding: 8px 24px; font-size: 1rem; font-weight: bold; border-radius: 60px; color: #c7ab6e; cursor: pointer; transition: 0.25s; font-family: inherit; }
-        .nav button:hover { background: #c7ab6e; color: #1e422a; }
-        .services { display: flex; flex-wrap: wrap; gap: 25px; justify-content: center; margin: 45px 0; }
-        .service-card { background: #fef5e0; color: #1e422a; border-radius: 32px; padding: 25px 20px; text-align: center; flex: 1; min-width: 240px; }
-        .service-card h3 { color: #1e422a; font-size: 1.5rem; margin-bottom: 12px; }
-        .contact-block { background: #1e422a; padding: 25px; border-radius: 50px; text-align: center; margin: 30px 0; border: 1px solid #c7ab6e; color: #c7ab6e; }
-        button, .btn { background: #1e422a; border: none; color: #c7ab6e; padding: 10px 28px; border-radius: 40px; font-weight: bold; cursor: pointer; font-size: 1rem; font-family: inherit; }
-        button:hover { background: #2a5a3c; color: #fef5e0; }
-        form { background: #fef5e0; padding: 30px; border-radius: 40px; max-width: 500px; margin: 20px auto; }
-        input, textarea, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #1e422a; border-radius: 50px; font-family: inherit; }
-        .slot { display: inline-block; background: #1e422a; color: #c7ab6e; padding: 8px 18px; margin: 6px; border-radius: 60px; cursor: pointer; }
-        .slot.selected { background: #c7ab6e; color: #1e422a; }
-        .post { background: #fef5e0; border-radius: 28px; padding: 20px; margin-bottom: 20px; border-left: 8px solid #1e422a; }
-        footer { text-align: center; margin-top: 50px; padding: 20px; border-top: 1px solid #1e422a; }
-        .debug { background: #fff3cd; color: #856404; padding: 10px; margin: 10px; border-radius: 8px; font-family: monospace; font-size: 12px; border-left: 4px solid #ffc107; }
+        body { background: #c7ab6e; font-family: Georgia, serif; color: #1e422a; }
+        .header { background: #1e422a; padding: 20px; text-align: center; }
+        .logo-img { max-width: 280px; width: 90%; }
+        .nav { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        .nav button { background: transparent; border: 2px solid #c7ab6e; padding: 8px 20px; border-radius: 40px; color: #c7ab6e; cursor: pointer; font-family: inherit; }
+        .container { max-width: 1000px; margin: auto; padding: 20px; }
+        .service-card { background: #fef5e0; border-radius: 30px; padding: 20px; margin: 15px; display: inline-block; width: 250px; vertical-align: top; }
+        .contact-block { background: #1e422a; padding: 20px; border-radius: 40px; text-align: center; margin: 30px 0; color: #c7ab6e; }
+        button { background: #1e422a; color: #c7ab6e; border: none; padding: 10px 25px; border-radius: 40px; cursor: pointer; }
+        .debug { background: #fff3cd; color: #856404; padding: 8px; font-size: 11px; font-family: monospace; }
+        footer { text-align: center; padding: 20px; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
 <div class="header">
-    <img src="https://i.ibb.co/Jj2GQ4bD/photo-2026-05-18-11-46-49.jpg" alt="Гармония" class="logo-img">
+    <img src="https://i.ibb.co/Jj2GQ4bD/photo-2026-05-18-11-46-49.jpg" class="logo-img" alt="logo">
     <div class="nav">
-        <button id="homeBtn">ГЛАВНАЯ</button>
-        <button id="blogBtn">БЛОГ</button>
-        <button id="bookingBtn">ЗАПИСЬ</button>
-        <button id="cabinetBtn" style="display:none">ЛИЧНЫЙ КАБИНЕТ</button>
-        <button id="adminBtn" style="display:none">АДМИН</button>
-        <button id="authBtn">ВХОД</button>
-        <button id="logoutBtn" style="display:none">ВЫЙТИ</button>
-        <button id="langBtn">EN</button>
+        <button id="btnHome">ГЛАВНАЯ</button>
+        <button id="btnBlog">БЛОГ</button>
+        <button id="btnBook">ЗАПИСЬ</button>
+        <button id="btnCab" style="display:none">КАБИНЕТ</button>
+        <button id="btnAdmin" style="display:none">АДМИН</button>
+        <button id="btnAuth">ВХОД</button>
+        <button id="btnLogout" style="display:none">ВЫХОД</button>
+        <button id="btnLang">EN</button>
     </div>
 </div>
 
-<div class="container" id="app"></div>
-<footer>© Гармония — восстановление бровей и ресниц | ул. Короленко, 1</footer>
+<div class="container" id="app">
+    <h2>Загрузка...</h2>
+</div>
+
+<footer>© Гармония — ул. Короленко, 1 | 8 (991) 182-06-58</footer>
 
 <script>
-    // === ВАШИ КЛЮЧИ SUPABASE ===
-    const SB_URL = 'https://idbijgtjinbtrdjjyxwj.supabase.co';
-    const SB_KEY = 'sb_publishable_nJWpFtSfDsq45ccKdzv7Uw_FxwNGy2Q';
-    
-    // Исправлено: supabase (глобальная переменная от библиотеки)
-    const sbClient = supabase.createClient(SB_URL, SB_KEY);
+    // === ДАННЫЕ SUPABASE ===
+    const SUPABASE_URL = 'https://idbijgtjinbtrdjjyxwj.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_nJWpFtSfDsq45ccKdzv7Uw_FxwNGy2Q';
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     
     let currentUser = null;
     let currentLang = 'ru';
     
-    function log(msg) {
-        let dbg = document.getElementById('debug');
-        if (!dbg) {
-            dbg = document.createElement('div');
-            dbg.id = 'debug';
-            dbg.className = 'debug';
-            document.body.prepend(dbg);
+    // Отладка
+    function debug(msg) {
+        let d = document.getElementById('debugPanel');
+        if (!d) {
+            d = document.createElement('div');
+            d.id = 'debugPanel';
+            d.className = 'debug';
+            document.body.prepend(d);
         }
-        const time = new Date().toLocaleTimeString();
-        dbg.innerHTML = `[${time}] ${msg}<br>${dbg.innerHTML}`;
+        d.innerHTML = new Date().toLocaleTimeString() + ' ' + msg + '<br>' + d.innerHTML;
         console.log(msg);
     }
     
-    log('✅ Скрипт загружен, Supabase клиент создан');
+    debug('Скрипт запущен');
     
-    const translations = {
-        ru: { home: "Главная", blog: "Блог", book: "Запись", cabinet: "Личный кабинет", login: "Вход", logout: "Выход", name: "Имя", phone: "Телефон", email: "Email", password: "Пароль", register: "Регистрация", no_acc: "Нет аккаунта?", welcome: "ГАРМОНИЯ БРОВИ & РЕСНИЦЫ", sub: "Студия восстановления", service1: "Аппаратное восстановление", service2: "Ламинирование бровей", service3: "Ламинирование ресниц", book_btn: "Записаться сейчас" },
-        en: { home: "Home", blog: "Blog", book: "Booking", cabinet: "My cabinet", login: "Login", logout: "Logout", name: "Name", phone: "Phone", email: "Email", password: "Password", register: "Sign up", no_acc: "No account?", welcome: "HARMONY BROWS & LASHES", sub: "Restoration studio", service1: "Hardware restoration", service2: "Brow lamination", service3: "Lash lamination", book_btn: "Book now" }
+    // Переводы
+    const texts = {
+        ru: { home: "Главная", blog: "Блог", book: "Запись", cabinet: "Кабинет", login: "Вход", logout: "Выход", name: "Имя", phone: "Телефон", email: "Email", password: "Пароль", register: "Регистрация", no_acc: "Нет аккаунта?", welcome: "ГАРМОНИЯ БРОВИ & РЕСНИЦЫ", sub: "Студия восстановления", s1: "Аппаратное восстановление", s2: "Ламинирование бровей", s3: "Ламинирование ресниц", book_btn: "Записаться" },
+        en: { home: "Home", blog: "Blog", book: "Booking", cabinet: "Cabinet", login: "Login", logout: "Logout", name: "Name", phone: "Phone", email: "Email", password: "Password", register: "Sign up", no_acc: "No account?", welcome: "HARMONY BROWS & LASHES", sub: "Restoration studio", s1: "Hardware restoration", s2: "Brow lamination", s3: "Lash lamination", book_btn: "Book now" }
     };
-    function t(key) { return translations[currentLang][key] || key; }
+    function t(key) { return texts[currentLang][key] || key; }
     
+    // Загрузка пользователя
     async function loadUser() {
-        log('loadUser()');
-        const { data: { user }, error } = await sbClient.auth.getUser();
-        if (error) { log('Ошибка: ' + error.message); currentUser = null; }
-        else if (user) {
-            log('Пользователь: ' + user.email);
-            const { data: prof } = await sbClient.from('users').select('*').eq('email', user.email).single();
+        debug('loadUser');
+        const { data } = await sb.auth.getUser();
+        if (data?.user) {
+            debug('User: ' + data.user.email);
+            const { data: prof } = await sb.from('users').select('*').eq('email', data.user.email).single();
             currentUser = prof;
-            log('Роль: ' + (currentUser?.role || 'нет'));
-        } else { currentUser = null; log('Не авторизован'); }
-        
+        } else {
+            currentUser = null;
+            debug('Нет пользователя');
+        }
         const logged = !!currentUser;
-        document.getElementById('cabinetBtn').style.display = logged ? 'inline-block' : 'none';
-        document.getElementById('adminBtn').style.display = (currentUser?.role === 'admin') ? 'inline-block' : 'none';
-        document.getElementById('authBtn').style.display = logged ? 'none' : 'inline-block';
-        document.getElementById('logoutBtn').style.display = logged ? 'inline-block' : 'none';
+        document.getElementById('btnCab').style.display = logged ? 'inline-block' : 'none';
+        document.getElementById('btnAdmin').style.display = (currentUser?.role === 'admin') ? 'inline-block' : 'none';
+        document.getElementById('btnAuth').style.display = logged ? 'none' : 'inline-block';
+        document.getElementById('btnLogout').style.display = logged ? 'inline-block' : 'none';
     }
     
-    window.logout = async () => {
-        await sbClient.auth.signOut();
+    // Выход
+    async function logout() {
+        await sb.auth.signOut();
         await loadUser();
-        navigate('home');
-        log('Выход');
-    };
+        showPage('home');
+        debug('Выход');
+    }
     
-    async function homePage() {
+    // Страницы
+    async function showHome() {
         document.getElementById('app').innerHTML = `
-            <h2 style="color:#1e422a;">✨ ${t('welcome')}</h2>
-            <p style="font-size:1.2rem;">${t('sub')}</p>
-            <div class="services">
-                <div class="service-card"><h3>✨ ${t('service1')}</h3><p>Безболезненное восстановление бровей</p></div>
-                <div class="service-card"><h3>🌸 ${t('service2')}</h3><p>Идеальная форма и уход до 6 недель</p></div>
-                <div class="service-card"><h3>💫 ${t('service3')}</h3><p>Объём, изгиб и здоровье ресниц</p></div>
+            <h2>✨ ${t('welcome')}</h2>
+            <p>${t('sub')}</p>
+            <div>
+                <div class="service-card"><h3>✨ ${t('s1')}</h3><p>Безболезненное восстановление</p></div>
+                <div class="service-card"><h3>🌸 ${t('s2')}</h3><p>Идеальная форма до 6 недель</p></div>
+                <div class="service-card"><h3>💫 ${t('s3')}</h3><p>Объём и блеск ресниц</p></div>
             </div>
             <div class="contact-block">
                 <p>📞 8 (991) 182-06-58</p>
                 <p>📍 ул. Короленко, д. 1</p>
-                <p>🔗 <a href="https://vk.com/club232862243" target="_blank" style="color:#c7ab6e;">vk.com/club232862243</a></p>
+                <p>🔗 <a href="https://vk.com/club232862243" target="_blank" style="color:#c7ab6e;">ВКонтакте</a></p>
             </div>
-            <button class="btn" id="bookBtnMain">${t('book_btn')} →</button>
+            <button id="bookFromHome">${t('book_btn')} →</button>
         `;
-        document.getElementById('bookBtnMain')?.onclick = () => navigate('booking');
-        log('Главная');
+        document.getElementById('bookFromHome')?.onclick = () => showPage('booking');
+        debug('Главная');
     }
     
-    async function blogPage() {
-        document.getElementById('app').innerHTML = `<h2>📖 ${t('blog')}</h2><p>Скоро статьи о восстановлении бровей и ресниц.</p>`;
-        log('Блог');
+    async function showBlog() {
+        document.getElementById('app').innerHTML = `<h2>📖 ${t('blog')}</h2><p>Скоро здесь будут статьи о бровях и ресницах.</p>`;
+        debug('Блог');
     }
     
-    async function bookingPage() {
-        if (!currentUser) { alert('Нужно войти'); navigate('login'); return; }
+    async function showBooking() {
+        if (!currentUser) { alert('Войдите в аккаунт'); showPage('login'); return; }
         document.getElementById('app').innerHTML = `
             <h2>✎ ${t('book')}</h2>
-            <p>Вы авторизованы: ${currentUser.email}</p>
-            <button class="btn" id="testBook">✅ Тест записи</button>
+            <p>Вы вошли как ${currentUser.email}</p>
+            <button class="btn" id="testBookBtn">✅ Тест записи</button>
         `;
-        document.getElementById('testBook')?.onclick = () => alert('Тест: кнопка работает');
-        log('Запись');
+        document.getElementById('testBookBtn')?.onclick = () => alert('Тест: запись работает');
+        debug('Запись');
     }
     
-    async function cabinetPage() {
-        if (!currentUser) { navigate('login'); return; }
+    async function showCabinet() {
+        if (!currentUser) { showPage('login'); return; }
         document.getElementById('app').innerHTML = `
             <h2>👤 ${t('cabinet')}</h2>
-            <p><strong>${t('name')}:</strong> ${currentUser.name || '—'}</p>
+            <p><strong>${t('name')}:</strong> ${currentUser.name || '-'}</p>
             <p><strong>Email:</strong> ${currentUser.email}</p>
-            <p><strong>${t('phone')}:</strong> ${currentUser.phone || '—'}</p>
-            <button class="btn" id="newBookBtn">➕ ${t('book_btn')}</button>
+            <p><strong>${t('phone')}:</strong> ${currentUser.phone || '-'}</p>
+            <button id="newBookCab">➕ ${t('book_btn')}</button>
         `;
-        document.getElementById('newBookBtn')?.onclick = () => navigate('booking');
-        log('Кабинет');
+        document.getElementById('newBookCab')?.onclick = () => showPage('booking');
+        debug('Кабинет');
     }
     
-    async function loginPage() {
+    async function showLogin() {
         document.getElementById('app').innerHTML = `
             <h2>${t('login')}</h2>
             <form id="loginForm">
-                <input type="email" placeholder="${t('email')}" id="lemail" required>
-                <input type="password" placeholder="${t('password')}" id="lpass" required>
+                <input type="email" placeholder="${t('email')}" id="emailInp" required><br>
+                <input type="password" placeholder="${t('password')}" id="passInp" required><br>
                 <button type="submit">${t('login')}</button>
             </form>
-            <p style="text-align:center;">${t('no_acc')} <button class="btn" id="regBtn">${t('register')}</button></p>
+            <p>${t('no_acc')} <button id="toRegBtn">${t('register')}</button></p>
         `;
         document.getElementById('loginForm').onsubmit = async (e) => {
             e.preventDefault();
-            const email = document.getElementById('lemail').value;
-            const password = document.getElementById('lpass').value;
-            const { error } = await sbClient.auth.signInWithPassword({ email, password });
+            const email = document.getElementById('emailInp').value;
+            const password = document.getElementById('passInp').value;
+            const { error } = await sb.auth.signInWithPassword({ email, password });
             if (error) alert(error.message);
-            else { await loadUser(); navigate('home'); }
+            else { await loadUser(); showPage('home'); }
         };
-        document.getElementById('regBtn').onclick = () => navigate('register');
-        log('Логин');
+        document.getElementById('toRegBtn').onclick = () => showPage('register');
+        debug('Логин');
     }
     
-    async function registerPage() {
+    async function showRegister() {
         document.getElementById('app').innerHTML = `
             <h2>${t('register')}</h2>
             <form id="regForm">
-                <input type="text" placeholder="${t('name')}" id="rname" required>
-                <input type="tel" placeholder="${t('phone')}" id="rphone" required>
-                <input type="email" placeholder="${t('email')}" id="remail" required>
-                <input type="password" placeholder="${t('password')}" id="rpass" required>
+                <input type="text" placeholder="${t('name')}" id="regName" required><br>
+                <input type="tel" placeholder="${t('phone')}" id="regPhone" required><br>
+                <input type="email" placeholder="${t('email')}" id="regEmail" required><br>
+                <input type="password" placeholder="${t('password')}" id="regPass" required><br>
                 <button type="submit">${t('register')}</button>
             </form>
         `;
         document.getElementById('regForm').onsubmit = async (e) => {
             e.preventDefault();
-            const email = document.getElementById('remail').value;
-            const password = document.getElementById('rpass').value;
-            const name = document.getElementById('rname').value;
-            const phone = document.getElementById('rphone').value;
-            const { error } = await sbClient.auth.signUp({ email, password });
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPass').value;
+            const name = document.getElementById('regName').value;
+            const phone = document.getElementById('regPhone').value;
+            const { error } = await sb.auth.signUp({ email, password });
             if (error) alert(error.message);
             else {
-                await sbClient.from('users').insert([{ email, name, phone, role: 'client' }]);
+                await sb.from('users').insert([{ email, name, phone, role: 'client' }]);
                 alert('Регистрация успешна! Проверьте почту и войдите.');
-                navigate('login');
+                showPage('login');
             }
         };
-        log('Регистрация');
+        debug('Регистрация');
     }
     
-    async function adminPage() {
-        if (!currentUser || currentUser.role !== 'admin') { navigate('home'); return; }
-        document.getElementById('app').innerHTML = `<h2>👑 Админ</h2><p>Панель управления</p>`;
-        log('Админка');
+    async function showAdmin() {
+        if (!currentUser || currentUser.role !== 'admin') { showPage('home'); return; }
+        document.getElementById('app').innerHTML = `<h2>👑 Админ</h2><p>Панель управления (будет позже)</p>`;
+        debug('Админка');
     }
     
-    window.navigate = async (page) => {
-        log('Переход: ' + page);
-        if (page === 'home') await homePage();
-        else if (page === 'blog') await blogPage();
-        else if (page === 'booking') await bookingPage();
-        else if (page === 'cabinet') await cabinetPage();
-        else if (page === 'login') await loginPage();
-        else if (page === 'register') await registerPage();
-        else if (page === 'admin') await adminPage();
-    };
+    async function showPage(page) {
+        debug('Переход на ' + page);
+        if (page === 'home') await showHome();
+        else if (page === 'blog') await showBlog();
+        else if (page === 'booking') await showBooking();
+        else if (page === 'cabinet') await showCabinet();
+        else if (page === 'login') await showLogin();
+        else if (page === 'register') await showRegister();
+        else if (page === 'admin') await showAdmin();
+    }
     
-    document.getElementById('homeBtn').onclick = () => navigate('home');
-    document.getElementById('blogBtn').onclick = () => navigate('blog');
-    document.getElementById('bookingBtn').onclick = () => navigate('booking');
-    document.getElementById('cabinetBtn').onclick = () => navigate('cabinet');
-    document.getElementById('adminBtn').onclick = () => navigate('admin');
-    document.getElementById('authBtn').onclick = () => navigate('login');
-    document.getElementById('logoutBtn').onclick = () => logout();
-    document.getElementById('langBtn').onclick = () => {
+    // Кнопки
+    document.getElementById('btnHome').onclick = () => showPage('home');
+    document.getElementById('btnBlog').onclick = () => showPage('blog');
+    document.getElementById('btnBook').onclick = () => showPage('booking');
+    document.getElementById('btnCab').onclick = () => showPage('cabinet');
+    document.getElementById('btnAdmin').onclick = () => showPage('admin');
+    document.getElementById('btnAuth').onclick = () => showPage('login');
+    document.getElementById('btnLogout').onclick = () => logout();
+    document.getElementById('btnLang').onclick = () => {
         currentLang = currentLang === 'ru' ? 'en' : 'ru';
         localStorage.setItem('lang', currentLang);
-        navigate('home');
+        showPage('home');
+        debug('Язык: ' + currentLang);
     };
     
-    loadUser().then(() => navigate('home'));
-    log('✅ Готово');
+    // Запуск
+    loadUser().then(() => showPage('home'));
+    debug('Готово');
 </script>
 </body>
 </html>
