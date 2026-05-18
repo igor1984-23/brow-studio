@@ -2,108 +2,78 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Гармония — тест</title>
+    <title>Гармония — Брови и Ресницы</title>
     <style>
-        body { font-family: Georgia, serif; background: #c7ab6e; color: #1e422a; text-align: center; padding: 40px; }
-        .header { background: #1e422a; padding: 20px; border-radius: 30px; color: #c7ab6e; }
-        button { background: #1e422a; color: #c7ab6e; border: none; padding: 10px 20px; margin: 10px; border-radius: 30px; cursor: pointer; }
-        input { padding: 8px; margin: 5px; border-radius: 20px; border: none; }
-        .card { background: #fef5e0; padding: 20px; margin: 20px auto; max-width: 400px; border-radius: 30px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #c7ab6e; font-family: 'Georgia', serif; color: #1e422a; }
+        .header { background: #1e422a; padding: 20px; text-align: center; }
+        .logo-img { max-width: 280px; width: 90%; }
+        .nav { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        .nav button { background: transparent; border: 2px solid #c7ab6e; padding: 8px 20px; border-radius: 40px; color: #c7ab6e; cursor: pointer; font-family: inherit; }
+        .container { max-width: 1000px; margin: auto; padding: 20px; }
+        .service-card { background: #fef5e0; border-radius: 30px; padding: 20px; margin: 15px; display: inline-block; width: 250px; vertical-align: top; }
+        .contact-block { background: #1e422a; padding: 20px; border-radius: 40px; text-align: center; margin: 30px 0; color: #c7ab6e; }
+        button, .btn { background: #1e422a; color: #c7ab6e; border: none; padding: 10px 25px; border-radius: 40px; cursor: pointer; }
+        footer { text-align: center; padding: 20px; }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
 <div class="header">
-    <h1>ГАРМОНИЯ</h1>
-    <p>БРОВИ & РЕСНИЦЫ</p>
-    <div>
-        <button id="homeBtn">Главная</button>
-        <button id="loginBtn">Вход</button>
-        <button id="regBtn">Регистрация</button>
-        <button id="logoutBtn" style="display:none">Выход</button>
+    <img src="https://i.ibb.co/Jj2GQ4bD/photo-2026-05-18-11-46-49.jpg" class="logo-img" alt="Гармония">
+    <div class="nav">
+        <button onclick="showPage('home')">ГЛАВНАЯ</button>
+        <button onclick="showPage('blog')">БЛОГ</button>
+        <button onclick="showPage('booking')">ЗАПИСЬ</button>
+        <button onclick="showPage('contact')">КОНТАКТЫ</button>
     </div>
 </div>
 
-<div class="card" id="app">
-    <h2>Добро пожаловать!</h2>
-    <p>Студия аппаратного восстановления бровей</p>
+<div class="container" id="app">
+    <h2>✨ ГАРМОНИЯ БРОВИ & РЕСНИЦЫ</h2>
+    <p>Студия восстановления</p>
+    <div>
+        <div class="service-card"><h3>✨ Аппаратное восстановление</h3><p>Безболезненное восстановление бровей</p></div>
+        <div class="service-card"><h3>🌸 Ламинирование бровей</h3><p>Идеальная форма до 6 недель</p></div>
+        <div class="service-card"><h3>💫 Ламинирование ресниц</h3><p>Объём и здоровый блеск</p></div>
+    </div>
+    <div class="contact-block">
+        <p>📞 8 (991) 182-06-58</p>
+        <p>📍 ул. Короленко, д. 1</p>
+        <p>🔗 <a href="https://vk.com/club232862243" target="_blank" style="color:#c7ab6e;">ВКонтакте</a></p>
+    </div>
+    <button class="btn" onclick="showPage('booking')">Записаться сейчас →</button>
 </div>
 
+<footer>© Гармония — восстановление бровей и ресниц | ул. Короленко, 1</footer>
+
 <script>
-    // === НАСТРОЙКИ SUPABASE ===
-    const SUPABASE_URL = 'https://idbijgtjinbtrdjjyxwj.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_nJWpFtSfDsq45ccKdzv7Uw_FxwNGy2Q';
-    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    
-    let currentUser = null;
-    
-    async function loadUser() {
-        const { data } = await sb.auth.getUser();
-        currentUser = data?.user || null;
-        document.getElementById('loginBtn').style.display = currentUser ? 'none' : 'inline-block';
-        document.getElementById('regBtn').style.display = currentUser ? 'none' : 'inline-block';
-        document.getElementById('logoutBtn').style.display = currentUser ? 'inline-block' : 'none';
-        
+    function showPage(page) {
         const app = document.getElementById('app');
-        if (currentUser) {
-            app.innerHTML = `<h2>Привет, ${currentUser.email}!</h2><p>Вы успешно вошли.</p>`;
-        } else {
-            app.innerHTML = `<h2>Добро пожаловать!</h2><p>Войдите или зарегистрируйтесь.</p>`;
+        if (page === 'home') {
+            app.innerHTML = `
+                <h2>✨ ГАРМОНИЯ БРОВИ & РЕСНИЦЫ</h2>
+                <p>Студия восстановления</p>
+                <div>
+                    <div class="service-card"><h3>✨ Аппаратное восстановление</h3><p>Безболезненное восстановление бровей</p></div>
+                    <div class="service-card"><h3>🌸 Ламинирование бровей</h3><p>Идеальная форма до 6 недель</p></div>
+                    <div class="service-card"><h3>💫 Ламинирование ресниц</h3><p>Объём и здоровый блеск</p></div>
+                </div>
+                <div class="contact-block">
+                    <p>📞 8 (991) 182-06-58</p>
+                    <p>📍 ул. Короленко, д. 1</p>
+                    <p>🔗 <a href="https://vk.com/club232862243" target="_blank" style="color:#c7ab6e;">ВКонтакте</a></p>
+                </div>
+                <button class="btn" onclick="showPage('booking')">Записаться сейчас →</button>
+            `;
+        } else if (page === 'blog') {
+            app.innerHTML = `<h2>📖 Блог</h2><p>Скоро здесь будут полезные статьи о восстановлении бровей и ресниц.</p>`;
+        } else if (page === 'booking') {
+            app.innerHTML = `<h2>✎ Запись</h2><p>Для записи позвоните по телефону: <strong>8 (991) 182-06-58</strong></p><p>Или напишите в <a href="https://vk.com/club232862243" target="_blank">ВКонтакте</a></p>`;
+        } else if (page === 'contact') {
+            app.innerHTML = `<h2>📞 Контакты</h2><p>Телефон: 8 (991) 182-06-58</p><p>Адрес: ул. Короленко, д. 1</p><p>VK: <a href="https://vk.com/club232862243" target="_blank">vk.com/club232862243</a></p>`;
         }
     }
-    
-    async function logout() {
-        await sb.auth.signOut();
-        await loadUser();
-    }
-    
-    function showLogin() {
-        document.getElementById('app').innerHTML = `
-            <h2>Вход</h2>
-            <input type="email" id="email" placeholder="Email"><br>
-            <input type="password" id="password" placeholder="Пароль"><br>
-            <button id="doLogin">Войти</button>
-        `;
-        document.getElementById('doLogin').onclick = async () => {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const { error } = await sb.auth.signInWithPassword({ email, password });
-            if (error) alert(error.message);
-            else await loadUser();
-        };
-    }
-    
-    function showRegister() {
-        document.getElementById('app').innerHTML = `
-            <h2>Регистрация</h2>
-            <input type="text" id="name" placeholder="Имя"><br>
-            <input type="tel" id="phone" placeholder="Телефон"><br>
-            <input type="email" id="email" placeholder="Email"><br>
-            <input type="password" id="password" placeholder="Пароль"><br>
-            <button id="doReg">Зарегистрироваться</button>
-        `;
-        document.getElementById('doReg').onclick = async () => {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const name = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
-            const { error } = await sb.auth.signUp({ email, password });
-            if (error) alert(error.message);
-            else {
-                await sb.from('users').insert([{ email, name, phone, role: 'client' }]);
-                alert('Регистрация успешна! Проверьте почту и войдите.');
-                await loadUser();
-            }
-        };
-    }
-    
-    document.getElementById('homeBtn').onclick = () => loadUser();
-    document.getElementById('loginBtn').onclick = () => showLogin();
-    document.getElementById('regBtn').onclick = () => showRegister();
-    document.getElementById('logoutBtn').onclick = () => logout();
-    
-    loadUser();
 </script>
 
 </body>
