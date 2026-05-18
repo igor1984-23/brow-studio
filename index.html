@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Гармония — Брови и Ресницы</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #1e422a;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            color: #c7ab6e;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: #c7ab6e;
+            padding: 25px 20px;
+            border-radius: 0 0 40px 40px;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .logo-img {
+            max-width: 280px;
+            width: 90%;
+            height: auto;
+            display: inline-block;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .nav button {
+            background: transparent;
+            border: 2px solid #1a2a4f;
+            padding: 8px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 60px;
+            color: #1a2a4f;
+            cursor: pointer;
+            transition: 0.25s;
+            font-family: inherit;
+        }
+
+        .nav button:hover {
+            background: #1a2a4f;
+            color: #c7ab6e;
+        }
+
+        .services {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+            margin: 45px 0;
+        }
+
+        .service-card {
+            background: #c7ab6e;
+            color: #1a2a4f;
+            border-radius: 32px;
+            padding: 25px 20px;
+            text-align: center;
+            flex: 1;
+            min-width: 240px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-card h3 {
+            color: #1a2a4f;
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .contact-block {
+            background: #2a5a3c;
+            padding: 25px;
+            border-radius: 50px;
+            text-align: center;
+            margin: 30px 0;
+            border: 1px solid #c7ab6e;
+            color: #c7ab6e;
+        }
+
+        button, .btn {
+            background: #c7ab6e;
+            border: none;
+            color: #1a2a4f;
+            padding: 10px 28px;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+
+        button:hover {
+            background: #dbbc7e;
+            color: #0f1e3a;
+        }
+
+        form {
+            background: #c7ab6e;
+            color: #1a2a4f;
+            padding: 30px;
+            border-radius: 40px;
+            max-width: 500px;
+            margin: 20px auto;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #1a2a4f;
+            border-radius: 50px;
+            font-family: inherit;
+            background: #fef5e0;
+            color: #1a2a4f;
+        }
+
+        .slot {
+            display: inline-block;
+            background: #1a2a4f;
+            color: #c7ab6e;
+            padding: 8px 18px;
+            margin: 6px;
+            border-radius: 60px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .slot.selected {
+            background: #c7ab6e;
+            color: #1a2a4f;
+        }
+
+        .post {
+            background: #c7ab6e;
+            color: #1a2a4f;
+            border-radius: 28px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 8px solid #1a2a4f;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #c7ab6e;
+            border-top: 1px solid #2a5a3c;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<div class="header">
+    <img src="logo.png" alt="Гармония Брови и Ресницы" class="logo-img">
+    <div class="nav">
+        <button data-page="home">ГЛАВНАЯ</button>
+        <button data-page="blog">БЛОГ</button>
+        <button data-page="booking">ЗАПИСЬ</button>
+        <button data-page="cabinet" id="cabinetBtn" style="display:none">ЛИЧНЫЙ КАБИНЕТ</button>
+        <button id="adminBtn" style="display:none">АДМИН</button>
+        <button id="authBtn">ВХОД</button>
+        <button id="logoutBtn" style="display:none">ВЫЙТИ</button>
+        <button id="langBtn">EN</button>
+    </div>
+</div>
+
+<div class="container" id="app"></div>
+
+<footer>
+    © Гармония — восстановление бровей и ресниц | ул. Короленко, 1
+</footer>
+
+<script>
+    const SUPABASE_URL = 'https://idbijgtjinbtrdjjyxwj.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_nJWpFtSfDsq45ccKdzv7Uw_FxwNGy2Q';
+
+    const supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    let currentUser = null;
+    let currentLang = 'ru';
+
+    const dict = {
+        ru: { home: "Главная", blog: "Блог", book: "Запись", cabinet: "Личный кабинет", login: "Вход", logout: "Выход", name: "Имя", phone: "Телефон", email: "Email", password: "Пароль", register: "Регистрация", no_acc: "Нет аккаунта?", welcome: "ГАРМОНИЯ БРОВИ & РЕСНИЦЫ", sub: "Студия восстановления", service1: "Аппаратное восстановление", service2: "Ламинирование бровей", service3: "Ламинирование ресниц", book_btn: "Записаться сейчас", read_more: "Читать далее", back: "Назад", select_date: "Выберите дату", my_rec: "Мои записи", cancel: "Отменить" },
+        en: { home: "Home", blog: "Blog", book: "Booking", cabinet: "My cabinet", login: "Login", logout: "Logout", name: "Name", phone: "Phone", email: "Email", password: "Password", register: "Sign up", no_acc: "No account?", welcome: "HARMONY BROWS & LASHES", sub: "Restoration studio", service1: "Hardware restoration", service2: "Brow lamination", service3: "Lash lamination", book_btn: "Book now", read_more: "Read", back: "Back", select_date: "Select date", my_rec: "My bookings", cancel: "Cancel" }
+    };
+    const t = (key) => dict[currentLang][key] || key;
+
+    async function homePage() {
+        document.getElementById('app').innerHTML = `
+            <h2 style="color:#c7ab6e;">✨ ${t('welcome')}</h2>
+            <p style="font-size:1.2rem; color:#c7ab6e;">${t('sub')}</p>
+            <div class="services">
+                <div class="service-card"><h3>✨ ${t('service1')}</h3><p>Безболезненное восстановление бровей</p></div>
+                <div class="service-card"><h3>🌸 ${t('service2')}</h3><p>Идеальная форма и уход до 6 недель</p></div>
+                <div class="service-card"><h3>💫 ${t('service3')}</h3><p>Объём, изгиб и здоровье ресниц</p></div>
+            </div>
+            <div class="contact-block">
+                <p>📞 8 (991) 182-06-58</p>
+                <p>📍 ул. Короленко, д. 1</p>
+                <p>🔗 <a href="https://vk.com/club232862243" target="_blank" style="color:#c7ab6e;">vk.com/club232862243</a></p>
+            </div>
+            <button class="btn" onclick="navigate('booking')">${t('book_btn')} →</button>
+        `;
+    }
+
+    async function blogPage() {
+        let { data: posts } = await supabase.from('blog_posts').select('*').order('created_at', { ascending: false });
+        let html = `<h2 style="color:#c7ab6e;">📖 ${t('blog')}</h2>`;
+        if (!posts?.length) html += `<p style="color:#c7ab6e;">Скоро статьи о восстановлении бровей и ресниц.</p>`;
+        else for(let p of posts) {
+            let title = currentLang === 'ru' ? p.title_ru : p.title_en;
+            let content = currentLang === 'ru' ? p.content_ru : p.content_en;
+            html += `<div class="post"><h3>${title}</h3><p>${content.substring(0, 100)}...</p><button class="btn" onclick="alert('Читать полностью: \n${content}')">${t('read_more')}</button></div>`;
+        }
+        document.getElementById('app').innerHTML = html;
+    }
+
+    async function bookingPage() {
+        if (!currentUser) { alert('Нужно войти'); navigate('login'); return; }
+        let today = new Date().toISOString().slice(0,10);
+        let slots = ['10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00'];
+        let selectedDate = today, selectedTime = null;
+
+        let { data: booked } = await supabase.from('appointments').select('time').eq('date', selectedDate);
+        let busy = booked.map(b => b.time);
+
+        function render() {
+            let free = slots.filter(s => !busy.includes(s));
+            document.getElementById('app').innerHTML = `
+                <h2 style="color:#c7ab6e;">✎ ${t('book')}</h2>
+                <label style="color:#c7ab6e;">${t('select_date')}: <input type="date" id="datePick" value="${selectedDate}" min="${today}"></label>
+                <div id="slotsList" style="margin:20px 0"></div>
+                <button class="btn" id="confirmBook">${t('book_btn')}</button>
+            `;
+            let div = document.getElementById('slotsList');
+            div.innerHTML = free.map(t => `<span class="slot" data-time="${t}">${t}</span>`).join('');
+            document.querySelectorAll('.slot').forEach(el => el.onclick = () => {
+                document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
+                el.classList.add('selected');
+                selectedTime = el.dataset.time;
+            });
+            document.getElementById('datePick').onchange = async (e) => {
+                selectedDate = e.target.value;
+                let { data: newBooked } = await supabase.from('appointments').select('time').eq('date', selectedDate);
+                busy = newBooked.map(b => b.time);
+                render();
+            };
+            document.getElementById('confirmBook').onclick = async () => {
+                if(!selectedTime) return alert('Выберите время');
+                let { error } = await supabase.from('appointments').insert([{ user_id: currentUser.id, date: selectedDate, time: selectedTime, service: 'Восстановление бровей' }]);
+                if(error) alert('Ошибка: ' + error.message);
+                else { alert('✅ Запись создана!'); navigate('cabinet'); }
+            };
+        }
+        render();
+    }
+
+    async function cabinetPage() {
+        if(!currentUser) return navigate('login');
+        let { data: recs } = await supabase.from('appointments').select('*').eq('user_id', currentUser.id).eq('status', 'active');
+        let html = `<h2 style="color:#c7ab6e;">👤 ${t('cabinet')}</h2>
+                    <p><strong style="color:#c7ab6e;">${t('name')}:</strong> ${currentUser.name}</p>
+                    <p><strong style="color:#c7ab6e;">${t('phone')}:</strong> ${currentUser.phone || '—'}</p>
+                    <p><strong style="color:#c7ab6e;">Email:</strong> ${currentUser.email}</p>
+                    <h3 style="color:#c7ab6e;">📅 ${t('my_rec')}</h3>`;
+        if(!recs.length) html += `<p>Нет активных записей.</p>`;
+        else recs.forEach(r => { html += `<p style="background:#2a5a3c; padding:10px; border-radius:30px;">📌 ${r.date} в ${r.time} — ${r.service} <button class="btn" onclick="cancelRec(${r.id})">${t('cancel')}</button></p>`; });
+        html += `<br><button class="btn" onclick="navigate('booking')">➕ ${t('book_btn')}</button>`;
+        document.getElementById('app').innerHTML = html;
+    }
+    window.cancelRec = async (id) => {
+        await supabase.from('appointments').update({ status: 'cancelled' }).eq('id', id);
+        cabinetPage();
+    };
+
+    async function loginPage() {
+        document.getElementById('app').innerHTML = `
+            <h2 style="color:#c7ab6e;">${t('login')}</h2>
+            <form id="loginForm"><input type="email" placeholder="${t('email')}" id="lemail"><input type="password" placeholder="${t('password')}" id="lpass"><button type="submit">${t('login')}</button></form>
+            <p style="text-align:center; color:#c7ab6e;">${t('no_acc')} <button class="btn" onclick="navigate('register')">${t('register')}</button></p>
+        `;
+        document.getElementById('loginForm').onsubmit = async (e) => {
+            e.preventDefault();
+            let { error } = await supabase.auth.signInWithPassword({ email: document.getElementById('lemail').value, password: document.getElementById('lpass').value });
+            if(error) alert(error.message);
+            else await loadUser(); navigate('cabinet');
+        };
+    }
+    async function registerPage() {
+        document.getElementById('app').innerHTML = `
+            <h2 style="color:#c7ab6e;">${t('register')}</h2>
+            <form id="regForm"><input type="text" placeholder="${t('name')}" id="rname"><input type="tel" placeholder="${t('phone')}" id="rphone"><input type="email" placeholder="${t('email')}" id="remail"><input type="password" placeholder="${t('password')}" id="rpass"><button type="submit">${t('register')}</button></form>
+        `;
+        document.getElementById('regForm').onsubmit = async (e) => {
+            e.preventDefault();
+            let { data, error } = await supabase.auth.signUp({ email: document.getElementById('remail').value, password: document.getElementById('rpass').value });
+            if(error) alert(error.message);
+            else {
+                await supabase.from('users').insert([{ email: document.getElementById('remail').value, name: document.getElementById('rname').value, phone: document.getElementById('rphone').value, role: 'client' }]);
+                alert('Регистрация прошла! Теперь войдите.');
+                navigate('login');
+            }
+        };
+    }
+
+    async function adminPage() {
+        if(!currentUser || currentUser.role !== 'admin') return navigate('home');
+        let { data: clients } = await supabase.from('users').select('*');
+        let { data: allRec } = await supabase.from('appointments').select('*, users(name, phone)');
+        document.getElementById('app').innerHTML = `
+            <h2 style="color:#c7ab6e;">👑 Админ</h2>
+            <div style="background:#2a5a3c; padding:20px; border-radius:30px; margin-bottom:30px;"><h3 style="color:#c7ab6e;">➕ Добавить пост</h3><input type="text" id="tr" placeholder="Заголовок RU"><input type="text" id="te" placeholder="Title EN"><textarea id="cr" rows="3" placeholder="Контент RU"></textarea><textarea id="ce" rows="3" placeholder="Content EN"></textarea><button onclick="addPost()">Опубликовать</button></div>
+            <h3 style="color:#c7ab6e;">👥 Клиенты</h3><ul style="background:#c7ab6e; color:#1a2a4f; padding:20px; border-radius:30px;">${clients.map(c=>`<li>${c.name} — ${c.email} — ${c.phone}</li>`).join('')}</ul>
+            <h3 style="color:#c7ab6e; margin-top:30px;">📅 Все записи</h3><ul style="background:#c7ab6e; color:#1a2a4f; padding:20px; border-radius:30px;">${allRec.map(a=>`<li>${a.date} ${a.time} — ${a.users?.name} (${a.users?.phone})</li>`).join('')}</ul>
+        `;
+    }
+    window.addPost = async () => {
+        await supabase.from('blog_posts').insert([{ title_ru: document.getElementById('tr').value, title_en: document.getElementById('te').value, content_ru: document.getElementById('cr').value, content_en: document.getElementById('ce').value }]);
+        alert('Пост добавлен');
+        adminPage();
+    };
+
+    async function loadUser() {
+        let { data: { user } } = await supabase.auth.getUser();
+        if(user) {
+            let { data: prof } = await supabase.from('users').select('*').eq('email', user.email).single();
+            currentUser = prof;
+        } else currentUser = null;
+        document.getElementById('cabinetBtn').style.display = currentUser ? 'inline-block' : 'none';
+        document.getElementById('adminBtn').style.display = (currentUser?.role === 'admin') ? 'inline-block' : 'none';
+        document.getElementById('authBtn').style.display = currentUser ? 'none' : 'inline-block';
+        document.getElementById('logoutBtn').style.display = currentUser ? 'inline-block' : 'none';
+    }
+    window.logout = async () => { await supabase.auth.signOut(); currentUser = null; await loadUser(); navigate('home'); };
+    window.navigate = async (page) => {
+        if(page === 'home') homePage();
+        else if(page === 'blog') blogPage();
+        else if(page === 'booking') bookingPage();
+        else if(page === 'cabinet') cabinetPage();
+        else if(page === 'login') loginPage();
+        else if(page === 'register') registerPage();
+        else if(page === 'admin') adminPage();
+    };
+    document.getElementById('langBtn').onclick = () => { currentLang = currentLang === 'ru' ? 'en' : 'ru'; localStorage.setItem('lang', currentLang); navigate(window.currentPage || 'home'); };
+    document.querySelectorAll('[data-page]').forEach(btn => btn.onclick = () => { window.currentPage = btn.dataset.page; navigate(btn.dataset.page); });
+    document.getElementById('authBtn').onclick = () => navigate('login');
+    document.getElementById('logoutBtn').onclick = () => logout();
+    document.getElementById('adminBtn').onclick = () => navigate('admin');
+    loadUser().then(() => navigate('home'));
+</script>
+</body>
+</html>
