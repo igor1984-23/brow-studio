@@ -28,12 +28,13 @@
         .active-page { display: block; }
         a { color: #1e422a; text-decoration: none; border-bottom: 1px solid #c7ab6e; }
         a:hover { border-bottom-color: #1e422a; }
+        
+        /* Стили для форм и кабинета — в том же духе */
         form { display: flex; flex-direction: column; gap: 15px; max-width: 400px; margin: 20px 0; }
         input { padding: 12px; border: 1px solid #c7ab6e; border-radius: 30px; font-family: inherit; background: white; }
-        .error { color: #b33; font-size: 0.85rem; margin-top: 5px; }
-        .success { color: #2a5a3c; }
         .cabinet-info { background: #e8d9c4; padding: 25px; border-radius: 30px; margin-bottom: 30px; }
         .booking-item { background: white; padding: 15px; border-radius: 30px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .time-slot { background: #e8d9c4; color: #1e422a; margin: 5px; padding: 8px 20px; display: inline-block; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -54,7 +55,7 @@
 </div>
 
 <div class="container">
-    <!-- ГЛАВНАЯ -->
+    <!-- ГЛАВНАЯ (дизайн как был) -->
     <div id="page-home" class="page active-page">
         <div class="content">
             <h2>ГАРМОНИЯ БРОВИ & РЕСНИЦЫ</h2>
@@ -77,7 +78,7 @@
     <div id="page-blog" class="page">
         <div class="content">
             <h2>Блог</h2>
-            <p style="font-size:1.1rem;">Статьи о восстановлении бровей и уходе появятся здесь в ближайшее время.</p>
+            <p style="font-size:1.1rem;">Статьи о восстановлении бровей и уходе появятся здесь.</p>
         </div>
     </div>
 
@@ -85,9 +86,7 @@
     <div id="page-booking" class="page">
         <div class="content">
             <h2>Запись</h2>
-            <p style="font-size:1.1rem;">Выберите удобное время</p>
             <div id="bookingSlots"></div>
-            <div id="bookingMessage"></div>
         </div>
     </div>
 
@@ -95,14 +94,14 @@
     <div id="page-contacts" class="page">
         <div class="content">
             <h2>Контакты</h2>
-            <p style="font-size:1.1rem;">Оксана — мастер студии «Гармония»</p>
             <p>📞 Телефон: <strong>8 (991) 182-06-58</strong></p>
-            <p>🔗 <a href="https://vk.com/club232862243" target="_blank">ВКонтакте</a></p>
             <p>📍 Адрес: ул. Короленко, д. 1</p>
+            <p>🔗 <a href="https://vk.com/club232862243" target="_blank">ВКонтакте</a></p>
+            <p>Оксана — мастер студии</p>
         </div>
     </div>
 
-    <!-- ЛОГИН -->
+    <!-- ВХОД -->
     <div id="page-login" class="page">
         <div class="content">
             <h2>Вход</h2>
@@ -111,7 +110,7 @@
                 <input type="password" id="loginPassword" placeholder="Пароль" required>
                 <button type="submit">Войти</button>
             </form>
-            <p style="margin-top: 20px;">Нет аккаунта? <button class="btn" id="toRegisterBtn" style="display:inline-block; padding:8px 20px;">Регистрация</button></p>
+            <p style="margin-top:20px;">Нет аккаунта? <button class="btn" id="toRegisterBtn" style="display:inline-block; padding:8px 20px;">Регистрация</button></p>
         </div>
     </div>
 
@@ -129,7 +128,7 @@
         </div>
     </div>
 
-    <!-- ЛИЧНЫЙ КАБИНЕТ -->
+    <!-- КАБИНЕТ -->
     <div id="page-cabinet" class="page">
         <div class="content">
             <h2>Личный кабинет</h2>
@@ -152,14 +151,12 @@
 <footer>© Гармония — восстановление бровей и ресниц | ул. Короленко, 1</footer>
 
 <script>
-    // === SUPABASE ===
     const SUPABASE_URL = 'https://idbijgtjinbtrdjjyxwj.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_nJWpFtSfDsq45ccKdzv7Uw_FxwNGy2Q';
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     
     let currentUser = null;
     
-    // === УТИЛИТЫ ===
     async function loadUser() {
         const { data } = await sb.auth.getUser();
         if (data?.user) {
@@ -168,10 +165,6 @@
         } else {
             currentUser = null;
         }
-        updateUI();
-    }
-    
-    function updateUI() {
         const logged = !!currentUser;
         document.getElementById('cabinetNavBtn').style.display = logged ? 'inline-block' : 'none';
         document.getElementById('adminNavBtn').style.display = (currentUser?.role === 'admin') ? 'inline-block' : 'none';
@@ -185,45 +178,43 @@
         showPage('home');
     }
     
-    // === РЕГИСТРАЦИЯ ===
+    // Регистрация
     document.getElementById('registerForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = document.getElementById('regEmail').value;
         const password = document.getElementById('regPassword').value;
         const name = document.getElementById('regName').value;
         const phone = document.getElementById('regPhone').value;
-        
         const { error } = await sb.auth.signUp({ email, password });
-        if (error) {
-            alert(error.message);
-        } else {
+        if (error) alert(error.message);
+        else {
             await sb.from('users').insert([{ email, name, phone, role: 'client' }]);
             alert('Регистрация успешна! Проверьте почту для подтверждения.');
             showPage('login');
         }
     });
     
-    // === ЛОГИН ===
+    // Вход
     document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = document.getElementById('loginEmail').value;
         const password = document.getElementById('loginPassword').value;
         const { error } = await sb.auth.signInWithPassword({ email, password });
-        if (error) {
-            alert(error.message);
-        } else {
+        if (error) alert(error.message);
+        else {
             await loadUser();
             showPage('home');
         }
     });
     
     document.getElementById('toRegisterBtn')?.addEventListener('click', () => showPage('register'));
+    document.getElementById('logoutBtn').onclick = logout;
     
-    // === ЛИЧНЫЙ КАБИНЕТ ===
+    // Кабинет
     async function loadCabinet() {
         if (!currentUser) return;
         const { data: appointments } = await sb.from('appointments').select('*').eq('user_id', currentUser.id).eq('status', 'active');
-        const infoHtml = `
+        document.getElementById('cabinetInfo').innerHTML = `
             <div class="cabinet-info">
                 <p><strong>Имя:</strong> ${currentUser.name}</p>
                 <p><strong>Телефон:</strong> ${currentUser.phone}</p>
@@ -231,19 +222,10 @@
             </div>
         `;
         let bookingsHtml = '';
-        if (!appointments || appointments.length === 0) {
-            bookingsHtml = '<p>У вас пока нет записей.</p>';
-        } else {
-            appointments.forEach(a => {
-                bookingsHtml += `
-                    <div class="booking-item">
-                        <span>${a.date} в ${a.time.substring(0,5)} — ${a.service}</span>
-                        <button onclick="cancelBooking('${a.id}')">Отменить</button>
-                    </div>
-                `;
-            });
-        }
-        document.getElementById('cabinetInfo').innerHTML = infoHtml;
+        if (!appointments || appointments.length === 0) bookingsHtml = '<p>У вас пока нет записей.</p>';
+        else appointments.forEach(a => {
+            bookingsHtml += `<div class="booking-item"><span>${a.date} в ${a.time.substring(0,5)} — ${a.service}</span><button onclick="cancelBooking('${a.id}')">Отменить</button></div>`;
+        });
         document.getElementById('myAppointments').innerHTML = bookingsHtml;
     }
     
@@ -252,7 +234,7 @@
         loadCabinet();
     };
     
-    // === ЗАПИСЬ ===
+    // Запись
     async function loadBookingPage() {
         if (!currentUser) {
             document.getElementById('bookingSlots').innerHTML = '<p>Для записи необходимо <button class="btn" onclick="showPage(\'login\')">войти</button></p>';
@@ -260,21 +242,16 @@
         }
         const slots = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'];
         const today = new Date().toISOString().slice(0,10);
-        let selectedDate = today;
-        let selectedTime = null;
+        let selectedDate = today, selectedTime = null;
         
-        async function renderSlots() {
+        async function render() {
             const { data: booked } = await sb.from('appointments').select('time').eq('date', selectedDate).eq('status', 'active');
             const busy = booked.map(b => b.time);
             const free = slots.filter(s => !busy.includes(s));
-            
-            let html = `<label>Дата: <input type="date" id="datePicker" value="${selectedDate}" min="${today}"></label><div style="margin: 20px 0;">`;
-            free.forEach(slot => {
-                html += `<button class="btn time-slot" data-time="${slot}" style="margin:5px; background:#e8d9c4; color:#1e422a;">${slot}</button>`;
-            });
-            html += `</div><button id="confirmBookingBtn" class="btn">Подтвердить запись</button>`;
+            let html = `<label>Дата: <input type="date" id="datePicker" value="${selectedDate}" min="${today}"></label><div style="margin:20px 0;">`;
+            free.forEach(slot => { html += `<button class="btn time-slot" data-time="${slot}">${slot}</button>`; });
+            html += `</div><button id="confirmBtn" class="btn">Подтвердить запись</button>`;
             document.getElementById('bookingSlots').innerHTML = html;
-            
             document.querySelectorAll('.time-slot').forEach(btn => {
                 btn.onclick = () => {
                     document.querySelectorAll('.time-slot').forEach(b => b.style.background = '#e8d9c4');
@@ -282,45 +259,33 @@
                     selectedTime = btn.getAttribute('data-time');
                 };
             });
-            document.getElementById('datePicker').onchange = (e) => {
-                selectedDate = e.target.value;
-                renderSlots();
-            };
-            document.getElementById('confirmBookingBtn').onclick = async () => {
+            document.getElementById('datePicker').onchange = (e) => { selectedDate = e.target.value; render(); };
+            document.getElementById('confirmBtn').onclick = async () => {
                 if (!selectedTime) { alert('Выберите время'); return; }
                 const { error } = await sb.from('appointments').insert([{ user_id: currentUser.id, date: selectedDate, time: selectedTime, service: 'Восстановление бровей' }]);
                 if (error) alert(error.message);
                 else { alert('Запись создана!'); showPage('cabinet'); }
             };
         }
-        renderSlots();
+        render();
     }
     
-    // === АДМИНКА ===
+    // Админка
     async function loadAdminPanel() {
         if (!currentUser || currentUser.role !== 'admin') return;
         const { data: clients } = await sb.from('users').select('*');
         const { data: allBookings } = await sb.from('appointments').select('*, users(name, phone)');
-        
-        let clientsHtml = '<ul>';
+        let clientsHtml = '<ul>', bookingsHtml = '<ul>';
         clients?.forEach(c => clientsHtml += `<li>${c.name} — ${c.email} — ${c.phone}</li>`);
-        clientsHtml += '</ul>';
-        
-        let bookingsHtml = '<ul>';
-        allBookings?.forEach(b => bookingsHtml += `<li>${b.date} ${b.time.substring(0,5)} — ${b.users?.name} (${b.users?.phone}) — ${b.service}</li>`);
-        bookingsHtml += '</ul>';
-        
-        document.getElementById('adminPanel').innerHTML = `
-            <h3>Клиенты</h3>${clientsHtml}
-            <h3>Все записи</h3>${bookingsHtml}
-        `;
+        allBookings?.forEach(b => bookingsHtml += `<li>${b.date} ${b.time.substring(0,5)} — ${b.users?.name} (${b.users?.phone})</li>`);
+        clientsHtml += '</ul>'; bookingsHtml += '</ul>';
+        document.getElementById('adminPanel').innerHTML = `<h3>Клиенты</h3>${clientsHtml}<h3>Все записи</h3>${bookingsHtml}`;
     }
     
-    // === НАВИГАЦИЯ ===
+    // Навигация
     window.showPage = async (page) => {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
         document.getElementById(`page-${page}`).classList.add('active-page');
-        
         if (page === 'cabinet') await loadCabinet();
         if (page === 'booking') await loadBookingPage();
         if (page === 'admin') await loadAdminPanel();
@@ -329,9 +294,6 @@
     document.querySelectorAll('[data-page]').forEach(btn => {
         btn.addEventListener('click', () => showPage(btn.getAttribute('data-page')));
     });
-    document.getElementById('logoutBtn').onclick = logout;
-    document.getElementById('authNavBtn').onclick = () => showPage('login');
-    document.getElementById('toRegisterBtn')?.addEventListener('click', () => showPage('register'));
     
     loadUser().then(() => showPage('home'));
 </script>
