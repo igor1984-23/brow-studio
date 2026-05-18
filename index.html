@@ -11,10 +11,11 @@
             box-sizing: border-box;
         }
 
+        /* Фон всей страницы теперь песочный */
         body {
-            background: #1e422a;
+            background: #c7ab6e;
             font-family: 'Georgia', 'Times New Roman', serif;
-            color: #c7ab6e;
+            color: #1e422a;
             line-height: 1.5;
         }
 
@@ -24,8 +25,9 @@
             padding: 20px;
         }
 
+        /* Шапка — зелёная */
         .header {
-            background: #c7ab6e;
+            background: #1e422a;
             padding: 25px 20px;
             border-radius: 0 0 40px 40px;
             box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
@@ -33,12 +35,14 @@
         }
 
         .logo-img {
-            max-width: 280px;
-            width: 90%;
+            max-width: 320px;
+            width: 85%;
             height: auto;
             display: inline-block;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
         }
 
+        /* Навигация — зелёная, кнопки светлые */
         .nav {
             display: flex;
             justify-content: center;
@@ -49,22 +53,23 @@
 
         .nav button {
             background: transparent;
-            border: 2px solid #1a2a4f;
+            border: 2px solid #c7ab6e;
             padding: 8px 24px;
             font-size: 1rem;
             font-weight: bold;
             border-radius: 60px;
-            color: #1a2a4f;
+            color: #c7ab6e;
             cursor: pointer;
             transition: 0.25s;
             font-family: inherit;
         }
 
         .nav button:hover {
-            background: #1a2a4f;
-            color: #c7ab6e;
+            background: #c7ab6e;
+            color: #1e422a;
         }
 
+        /* Карточки услуг — песочные, текст зелёный */
         .services {
             display: flex;
             flex-wrap: wrap;
@@ -74,8 +79,8 @@
         }
 
         .service-card {
-            background: #c7ab6e;
-            color: #1a2a4f;
+            background: #fef5e0;
+            color: #1e422a;
             border-radius: 32px;
             padding: 25px 20px;
             text-align: center;
@@ -85,13 +90,14 @@
         }
 
         .service-card h3 {
-            color: #1a2a4f;
+            color: #1e422a;
             font-size: 1.5rem;
             margin-bottom: 12px;
         }
 
+        /* Контактный блок — зелёный, текст песочный */
         .contact-block {
-            background: #2a5a3c;
+            background: #1e422a;
             padding: 25px;
             border-radius: 50px;
             text-align: center;
@@ -101,9 +107,9 @@
         }
 
         button, .btn {
-            background: #c7ab6e;
+            background: #1e422a;
             border: none;
-            color: #1a2a4f;
+            color: #c7ab6e;
             padding: 10px 28px;
             border-radius: 40px;
             font-weight: bold;
@@ -114,13 +120,14 @@
         }
 
         button:hover {
-            background: #dbbc7e;
-            color: #0f1e3a;
+            background: #2a5a3c;
+            color: #fef5e0;
         }
 
+        /* Формы — песочные, текст зелёный */
         form {
-            background: #c7ab6e;
-            color: #1a2a4f;
+            background: #fef5e0;
+            color: #1e422a;
             padding: 30px;
             border-radius: 40px;
             max-width: 500px;
@@ -132,16 +139,16 @@
             width: 100%;
             padding: 12px;
             margin: 8px 0;
-            border: 1px solid #1a2a4f;
+            border: 1px solid #1e422a;
             border-radius: 50px;
             font-family: inherit;
-            background: #fef5e0;
-            color: #1a2a4f;
+            background: white;
+            color: #1e422a;
         }
 
         .slot {
             display: inline-block;
-            background: #1a2a4f;
+            background: #1e422a;
             color: #c7ab6e;
             padding: 8px 18px;
             margin: 6px;
@@ -152,24 +159,24 @@
 
         .slot.selected {
             background: #c7ab6e;
-            color: #1a2a4f;
+            color: #1e422a;
         }
 
         .post {
-            background: #c7ab6e;
-            color: #1a2a4f;
+            background: #fef5e0;
+            color: #1e422a;
             border-radius: 28px;
             padding: 20px;
             margin-bottom: 20px;
-            border-left: 8px solid #1a2a4f;
+            border-left: 8px solid #1e422a;
         }
 
         footer {
             text-align: center;
             margin-top: 50px;
             padding: 20px;
-            color: #c7ab6e;
-            border-top: 1px solid #2a5a3c;
+            color: #1e422a;
+            border-top: 1px solid #1e422a;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -177,7 +184,7 @@
 <body>
 
 <div class="header">
-    <img src="logo.png" alt="Гармония Брови и Ресницы" class="logo-img">
+    <img src="https://i.ibb.co/Jj2GQ4bD/photo-2026-05-18-11-46-49.jpg" alt="Гармония Брови и Ресницы" class="logo-img">
     <div class="nav">
         <button data-page="home">ГЛАВНАЯ</button>
         <button data-page="blog">БЛОГ</button>
@@ -197,6 +204,7 @@
 </footer>
 
 <script>
+    // ============ ВАШИ КЛЮЧИ SUPABASE ============
     const SUPABASE_URL = 'https://idbijgtjinbtrdjjyxwj.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_nJWpFtSfDsq45ccKdzv7Uw_FxwNGy2Q';
 
@@ -212,8 +220,8 @@
 
     async function homePage() {
         document.getElementById('app').innerHTML = `
-            <h2 style="color:#c7ab6e;">✨ ${t('welcome')}</h2>
-            <p style="font-size:1.2rem; color:#c7ab6e;">${t('sub')}</p>
+            <h2 style="color:#1e422a;">✨ ${t('welcome')}</h2>
+            <p style="font-size:1.2rem; color:#1e422a;">${t('sub')}</p>
             <div class="services">
                 <div class="service-card"><h3>✨ ${t('service1')}</h3><p>Безболезненное восстановление бровей</p></div>
                 <div class="service-card"><h3>🌸 ${t('service2')}</h3><p>Идеальная форма и уход до 6 недель</p></div>
@@ -230,8 +238,8 @@
 
     async function blogPage() {
         let { data: posts } = await supabase.from('blog_posts').select('*').order('created_at', { ascending: false });
-        let html = `<h2 style="color:#c7ab6e;">📖 ${t('blog')}</h2>`;
-        if (!posts?.length) html += `<p style="color:#c7ab6e;">Скоро статьи о восстановлении бровей и ресниц.</p>`;
+        let html = `<h2 style="color:#1e422a;">📖 ${t('blog')}</h2>`;
+        if (!posts?.length) html += `<p style="color:#1e422a;">Скоро статьи о восстановлении бровей и ресниц.</p>`;
         else for(let p of posts) {
             let title = currentLang === 'ru' ? p.title_ru : p.title_en;
             let content = currentLang === 'ru' ? p.content_ru : p.content_en;
@@ -252,8 +260,8 @@
         function render() {
             let free = slots.filter(s => !busy.includes(s));
             document.getElementById('app').innerHTML = `
-                <h2 style="color:#c7ab6e;">✎ ${t('book')}</h2>
-                <label style="color:#c7ab6e;">${t('select_date')}: <input type="date" id="datePick" value="${selectedDate}" min="${today}"></label>
+                <h2 style="color:#1e422a;">✎ ${t('book')}</h2>
+                <label style="color:#1e422a;">${t('select_date')}: <input type="date" id="datePick" value="${selectedDate}" min="${today}"></label>
                 <div id="slotsList" style="margin:20px 0"></div>
                 <button class="btn" id="confirmBook">${t('book_btn')}</button>
             `;
@@ -283,13 +291,13 @@
     async function cabinetPage() {
         if(!currentUser) return navigate('login');
         let { data: recs } = await supabase.from('appointments').select('*').eq('user_id', currentUser.id).eq('status', 'active');
-        let html = `<h2 style="color:#c7ab6e;">👤 ${t('cabinet')}</h2>
-                    <p><strong style="color:#c7ab6e;">${t('name')}:</strong> ${currentUser.name}</p>
-                    <p><strong style="color:#c7ab6e;">${t('phone')}:</strong> ${currentUser.phone || '—'}</p>
-                    <p><strong style="color:#c7ab6e;">Email:</strong> ${currentUser.email}</p>
-                    <h3 style="color:#c7ab6e;">📅 ${t('my_rec')}</h3>`;
+        let html = `<h2 style="color:#1e422a;">👤 ${t('cabinet')}</h2>
+                    <p><strong style="color:#1e422a;">${t('name')}:</strong> ${currentUser.name}</p>
+                    <p><strong style="color:#1e422a;">${t('phone')}:</strong> ${currentUser.phone || '—'}</p>
+                    <p><strong style="color:#1e422a;">Email:</strong> ${currentUser.email}</p>
+                    <h3 style="color:#1e422a;">📅 ${t('my_rec')}</h3>`;
         if(!recs.length) html += `<p>Нет активных записей.</p>`;
-        else recs.forEach(r => { html += `<p style="background:#2a5a3c; padding:10px; border-radius:30px;">📌 ${r.date} в ${r.time} — ${r.service} <button class="btn" onclick="cancelRec(${r.id})">${t('cancel')}</button></p>`; });
+        else recs.forEach(r => { html += `<p style="background:#e8d5c0; padding:10px; border-radius:30px;">📌 ${r.date} в ${r.time} — ${r.service} <button class="btn" onclick="cancelRec(${r.id})">${t('cancel')}</button></p>`; });
         html += `<br><button class="btn" onclick="navigate('booking')">➕ ${t('book_btn')}</button>`;
         document.getElementById('app').innerHTML = html;
     }
@@ -300,9 +308,9 @@
 
     async function loginPage() {
         document.getElementById('app').innerHTML = `
-            <h2 style="color:#c7ab6e;">${t('login')}</h2>
+            <h2 style="color:#1e422a;">${t('login')}</h2>
             <form id="loginForm"><input type="email" placeholder="${t('email')}" id="lemail"><input type="password" placeholder="${t('password')}" id="lpass"><button type="submit">${t('login')}</button></form>
-            <p style="text-align:center; color:#c7ab6e;">${t('no_acc')} <button class="btn" onclick="navigate('register')">${t('register')}</button></p>
+            <p style="text-align:center; color:#1e422a;">${t('no_acc')} <button class="btn" onclick="navigate('register')">${t('register')}</button></p>
         `;
         document.getElementById('loginForm').onsubmit = async (e) => {
             e.preventDefault();
@@ -313,7 +321,7 @@
     }
     async function registerPage() {
         document.getElementById('app').innerHTML = `
-            <h2 style="color:#c7ab6e;">${t('register')}</h2>
+            <h2 style="color:#1e422a;">${t('register')}</h2>
             <form id="regForm"><input type="text" placeholder="${t('name')}" id="rname"><input type="tel" placeholder="${t('phone')}" id="rphone"><input type="email" placeholder="${t('email')}" id="remail"><input type="password" placeholder="${t('password')}" id="rpass"><button type="submit">${t('register')}</button></form>
         `;
         document.getElementById('regForm').onsubmit = async (e) => {
@@ -333,10 +341,10 @@
         let { data: clients } = await supabase.from('users').select('*');
         let { data: allRec } = await supabase.from('appointments').select('*, users(name, phone)');
         document.getElementById('app').innerHTML = `
-            <h2 style="color:#c7ab6e;">👑 Админ</h2>
-            <div style="background:#2a5a3c; padding:20px; border-radius:30px; margin-bottom:30px;"><h3 style="color:#c7ab6e;">➕ Добавить пост</h3><input type="text" id="tr" placeholder="Заголовок RU"><input type="text" id="te" placeholder="Title EN"><textarea id="cr" rows="3" placeholder="Контент RU"></textarea><textarea id="ce" rows="3" placeholder="Content EN"></textarea><button onclick="addPost()">Опубликовать</button></div>
-            <h3 style="color:#c7ab6e;">👥 Клиенты</h3><ul style="background:#c7ab6e; color:#1a2a4f; padding:20px; border-radius:30px;">${clients.map(c=>`<li>${c.name} — ${c.email} — ${c.phone}</li>`).join('')}</ul>
-            <h3 style="color:#c7ab6e; margin-top:30px;">📅 Все записи</h3><ul style="background:#c7ab6e; color:#1a2a4f; padding:20px; border-radius:30px;">${allRec.map(a=>`<li>${a.date} ${a.time} — ${a.users?.name} (${a.users?.phone})</li>`).join('')}</ul>
+            <h2 style="color:#1e422a;">👑 Админ</h2>
+            <div style="background:#e8d5c0; padding:20px; border-radius:30px; margin-bottom:30px;"><h3 style="color:#1e422a;">➕ Добавить пост</h3><input type="text" id="tr" placeholder="Заголовок RU"><input type="text" id="te" placeholder="Title EN"><textarea id="cr" rows="3" placeholder="Контент RU"></textarea><textarea id="ce" rows="3" placeholder="Content EN"></textarea><button onclick="addPost()">Опубликовать</button></div>
+            <h3 style="color:#1e422a;">👥 Клиенты</h3><ul style="background:#fef5e0; color:#1e422a; padding:20px; border-radius:30px;">${clients.map(c=>`<li>${c.name} — ${c.email} — ${c.phone}</li>`).join('')}</ul>
+            <h3 style="color:#1e422a; margin-top:30px;">📅 Все записи</h3><ul style="background:#fef5e0; color:#1e422a; padding:20px; border-radius:30px;">${allRec.map(a=>`<li>${a.date} ${a.time} — ${a.users?.name} (${a.users?.phone})</li>`).join('')}</ul>
         `;
     }
     window.addPost = async () => {
