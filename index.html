@@ -25,7 +25,7 @@
         .slot.selected { background: #c7ab6e; color: #1e422a; }
         .post { background: #fef5e0; border-radius: 28px; padding: 20px; margin-bottom: 20px; border-left: 8px solid #1e422a; }
         footer { text-align: center; margin-top: 50px; padding: 20px; border-top: 1px solid #1e422a; }
-        .debug { background: yellow; color: black; padding: 10px; margin: 10px; border-radius: 10px; font-family: monospace; }
+        .debug { background: #f0f0f0; color: #333; padding: 10px; margin: 10px; border-radius: 10px; font-family: monospace; font-size: 12px; border: 1px solid #ccc; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -49,15 +49,17 @@
 <footer>© Гармония — восстановление бровей и ресниц | ул. Короленко, 1</footer>
 
 <script>
-    // === ВАШИ КЛЮЧИ SUPABASE ===
+    // === ВАШИ КЛЮЧИ SUPABASE (уникальное имя, чтобы избежать конфликта) ===
     const SUPABASE_URL = 'https://idbijgtjinbtrdjjyxwj.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_nJWpFtSfDsq45ccKdzv7Uw_FxwNGy2Q';
-    const supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    
+    // Используем другое имя переменной, чтобы избежать конфликта
+    const supabaseClient = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     
     let currentUser = null;
     let currentLang = 'ru';
     
-    // Добавим отладочное окно
+    // Отладочная функция
     function addDebug(text) {
         let debugDiv = document.getElementById('debug');
         if (!debugDiv) {
@@ -66,11 +68,11 @@
             debugDiv.className = 'debug';
             document.body.prepend(debugDiv);
         }
-        debugDiv.innerHTML += new Date().toLocaleTimeString() + ': ' + text + '<br>';
+        debugDiv.innerHTML = new Date().toLocaleTimeString() + ': ' + text + '<br>' + debugDiv.innerHTML;
         console.log(text);
     }
     
-    addDebug('Скрипт загружен, Supabase инициализирован');
+    addDebug('✅ Скрипт загружен, Supabase инициализирован');
     
     // === ПЕРЕВОДЫ ===
     const dict = {
@@ -82,14 +84,19 @@
     // === ЗАГРУЗКА ПОЛЬЗОВАТЕЛЯ ===
     async function loadUser() {
         addDebug('loadUser() вызвана');
-        const { data: { user }, error } = await supabase.auth.getUser();
-        if (error) { addDebug('Ошибка getUser: ' + error.message); currentUser = null; }
-        else if (user) {
+        const { data: { user }, error } = await supabaseClient.auth.getUser();
+        if (error) { 
+            addDebug('Ошибка getUser: ' + error.message); 
+            currentUser = null;
+        } else if (user) {
             addDebug('Пользователь найден: ' + user.email);
-            const { data: prof } = await supabase.from('users').select('*').eq('email', user.email).single();
+            const { data: prof } = await supabaseClient.from('users').select('*').eq('email', user.email).single();
             currentUser = prof;
             addDebug('Роль пользователя: ' + (currentUser?.role || 'нет'));
-        } else { currentUser = null; addDebug('Пользователь не авторизован'); }
+        } else { 
+            currentUser = null; 
+            addDebug('Пользователь не авторизован');
+        }
         
         // Обновляем UI кнопок
         const isLogged = !!currentUser;
@@ -102,7 +109,7 @@
     
     // === ВЫХОД ===
     window.logout = async () => {
-        await supabase.auth.signOut();
+        await supabaseClient.auth.signOut();
         await loadUser();
         navigate('home');
         addDebug('Выполнен выход');
@@ -129,7 +136,7 @@
         document.getElementById('bookNowBtn')?.addEventListener('click', () => navigate('booking'));
     }
     
-    // === БЛОГ (упрощённо) ===
+    // === БЛОГ ===
     async function blogPage() {
         addDebug('Рендер блога');
         document.getElementById('app').innerHTML = `<h2 style="color:#1e422a;">📖 ${t('blog')}</h2><p>Скоро здесь появятся статьи о восстановлении бровей и ресниц.</p>`;
@@ -137,9 +144,18 @@
     
     // === ЗАПИСЬ ===
     async function bookingPage() {
-        if (!currentUser) { addDebug('Запись: нет пользователя'); alert('Нужно войти'); navigate('login'); return; }
+        if (!currentUser) { 
+            addDebug('Запись: нет пользователя'); 
+            alert('Нужно войти'); 
+            navigate('login'); 
+            return; 
+        }
         addDebug('Рендер формы записи');
-        document.getElementById('app').innerHTML = `<h2 style="color:#1e422a;">✎ ${t('book')}</h2><p>Форма записи временно упрощена для теста.</p><button class="btn" id="testBookBtn">✅ Тест записи</button>`;
+        document.getElementById('app').innerHTML = `
+            <h2 style="color:#1e422a;">✎ ${t('book')}</h2>
+            <p>Вы авторизованы как: ${currentUser.email}</p>
+            <button class="btn" id="testBookBtn">✅ Тест записи</button>
+        `;
         document.getElementById('testBookBtn')?.addEventListener('click', () => alert('Тест: запись работает. Пользователь авторизован.'));
     }
     
@@ -147,7 +163,13 @@
     async function cabinetPage() {
         if (!currentUser) { navigate('login'); return; }
         addDebug('Рендер кабинета');
-        document.getElementById('app').innerHTML = `<h2 style="color:#1e422a;">👤 ${t('cabinet')}</h2><p><strong>Имя:</strong> ${currentUser.name}</p><p><strong>Email:</strong> ${currentUser.email}</p><p><strong>Роль:</strong> ${currentUser.role}</p><button class="btn" id="newBookCabBtn">➕ Новая запись</button>`;
+        document.getElementById('app').innerHTML = `
+            <h2 style="color:#1e422a;">👤 ${t('cabinet')}</h2>
+            <p><strong>Имя:</strong> ${currentUser.name}</p>
+            <p><strong>Email:</strong> ${currentUser.email}</p>
+            <p><strong>Роль:</strong> ${currentUser.role}</p>
+            <button class="btn" id="newBookCabBtn">➕ Новая запись</button>
+        `;
         document.getElementById('newBookCabBtn')?.addEventListener('click', () => navigate('booking'));
     }
     
@@ -168,9 +190,15 @@
             addDebug('Попытка входа');
             const email = document.getElementById('lemail').value;
             const password = document.getElementById('lpass').value;
-            const { error } = await supabase.auth.signInWithPassword({ email, password });
-            if (error) { addDebug('Ошибка входа: ' + error.message); alert(error.message); }
-            else { addDebug('Вход успешен'); await loadUser(); navigate('home'); }
+            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            if (error) { 
+                addDebug('Ошибка входа: ' + error.message); 
+                alert(error.message); 
+            } else { 
+                addDebug('Вход успешен'); 
+                await loadUser(); 
+                navigate('home'); 
+            }
         });
         document.getElementById('regRedirectBtn')?.addEventListener('click', () => navigate('register'));
     }
@@ -195,21 +223,28 @@
             const password = document.getElementById('rpass').value;
             const name = document.getElementById('rname').value;
             const phone = document.getElementById('rphone').value;
-            const { error } = await supabase.auth.signUp({ email, password });
-            if (error) { addDebug('Ошибка регистрации: ' + error.message); alert(error.message); }
-            else {
+            const { error } = await supabaseClient.auth.signUp({ email, password });
+            if (error) { 
+                addDebug('Ошибка регистрации: ' + error.message); 
+                alert(error.message); 
+            } else {
                 addDebug('Регистрация успешна, создаём запись в таблице users');
-                await supabase.from('users').insert([{ email, name, phone, role: 'client' }]);
-                alert('Регистрация прошла! Теперь войдите.');
+                await supabaseClient.from('users').insert([{ email, name, phone, role: 'client' }]);
+                alert('Регистрация прошла! Проверьте почту для подтверждения, затем войдите.');
                 navigate('login');
             }
         });
     }
     
+    // === АДМИНКА ===
     async function adminPage() {
-        if (!currentUser || currentUser.role !== 'admin') { addDebug('Нет прав админа'); navigate('home'); return; }
+        if (!currentUser || currentUser.role !== 'admin') { 
+            addDebug('Нет прав админа'); 
+            navigate('home'); 
+            return; 
+        }
         addDebug('Рендер админки');
-        document.getElementById('app').innerHTML = `<h2 style="color:#1e422a;">👑 Админ</h2><p>Панель администратора работает.</p>`;
+        document.getElementById('app').innerHTML = `<h2 style="color:#1e422a;">👑 Админ</h2><p>Панель администратора работает.</p><p>Здесь будут: список клиентов, все записи, добавление постов.</p>`;
     }
     
     // === НАВИГАЦИЯ ===
@@ -241,7 +276,7 @@
     
     // ЗАПУСК
     loadUser().then(() => navigate('home'));
-    addDebug('Инициализация завершена, обработчики кнопок установлены');
+    addDebug('✅ Инициализация завершена, обработчики кнопок установлены');
 </script>
 </body>
 </html>
