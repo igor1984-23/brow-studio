@@ -28,8 +28,6 @@
         .active-page { display: block; }
         a { color: #1e422a; text-decoration: none; border-bottom: 1px solid #c7ab6e; }
         a:hover { border-bottom-color: #1e422a; }
-        
-        /* Стили для форм и кабинета — в том же духе */
         form { display: flex; flex-direction: column; gap: 15px; max-width: 400px; margin: 20px 0; }
         input { padding: 12px; border: 1px solid #c7ab6e; border-radius: 30px; font-family: inherit; background: white; }
         .cabinet-info { background: #e8d9c4; padding: 25px; border-radius: 30px; margin-bottom: 30px; }
@@ -55,7 +53,6 @@
 </div>
 
 <div class="container">
-    <!-- ГЛАВНАЯ (дизайн как был) -->
     <div id="page-home" class="page active-page">
         <div class="content">
             <h2>ГАРМОНИЯ БРОВИ & РЕСНИЦЫ</h2>
@@ -74,15 +71,13 @@
         </div>
     </div>
 
-    <!-- БЛОГ -->
     <div id="page-blog" class="page">
         <div class="content">
             <h2>Блог</h2>
-            <p style="font-size:1.1rem;">Статьи о восстановлении бровей и уходе появятся здесь.</p>
+            <p>Статьи о восстановлении бровей и уходе появятся здесь.</p>
         </div>
     </div>
 
-    <!-- ЗАПИСЬ -->
     <div id="page-booking" class="page">
         <div class="content">
             <h2>Запись</h2>
@@ -90,7 +85,6 @@
         </div>
     </div>
 
-    <!-- КОНТАКТЫ -->
     <div id="page-contacts" class="page">
         <div class="content">
             <h2>Контакты</h2>
@@ -101,7 +95,6 @@
         </div>
     </div>
 
-    <!-- ВХОД -->
     <div id="page-login" class="page">
         <div class="content">
             <h2>Вход</h2>
@@ -114,7 +107,6 @@
         </div>
     </div>
 
-    <!-- РЕГИСТРАЦИЯ -->
     <div id="page-register" class="page">
         <div class="content">
             <h2>Регистрация</h2>
@@ -128,7 +120,6 @@
         </div>
     </div>
 
-    <!-- КАБИНЕТ -->
     <div id="page-cabinet" class="page">
         <div class="content">
             <h2>Личный кабинет</h2>
@@ -139,7 +130,6 @@
         </div>
     </div>
 
-    <!-- АДМИНКА -->
     <div id="page-admin" class="page">
         <div class="content">
             <h2>Админ-панель</h2>
@@ -151,6 +141,11 @@
 <footer>© Гармония — восстановление бровей и ресниц | ул. Короленко, 1</footer>
 
 <script>
+    // ЗАЩИТА ОТ LOCALHOST — ПОЛЬЗОВАТЕЛЬ НЕ УВИДИТ ОШИБКУ
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        window.location.href = 'https://igor1984-23.github.io/brow-studio';
+    }
+
     const SUPABASE_URL = 'https://idbijgtjinbtrdjjyxwj.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_nJWpFtSfDsq45ccKdzv7Uw_FxwNGy2Q';
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -178,7 +173,6 @@
         showPage('home');
     }
     
-    // Регистрация
     document.getElementById('registerForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = document.getElementById('regEmail').value;
@@ -194,7 +188,6 @@
         }
     });
     
-    // Вход
     document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = document.getElementById('loginEmail').value;
@@ -210,7 +203,6 @@
     document.getElementById('toRegisterBtn')?.addEventListener('click', () => showPage('register'));
     document.getElementById('logoutBtn').onclick = logout;
     
-    // Кабинет
     async function loadCabinet() {
         if (!currentUser) return;
         const { data: appointments } = await sb.from('appointments').select('*').eq('user_id', currentUser.id).eq('status', 'active');
@@ -234,7 +226,6 @@
         loadCabinet();
     };
     
-    // Запись
     async function loadBookingPage() {
         if (!currentUser) {
             document.getElementById('bookingSlots').innerHTML = '<p>Для записи необходимо <button class="btn" onclick="showPage(\'login\')">войти</button></p>';
@@ -270,7 +261,6 @@
         render();
     }
     
-    // Админка
     async function loadAdminPanel() {
         if (!currentUser || currentUser.role !== 'admin') return;
         const { data: clients } = await sb.from('users').select('*');
@@ -282,7 +272,6 @@
         document.getElementById('adminPanel').innerHTML = `<h3>Клиенты</h3>${clientsHtml}<h3>Все записи</h3>${bookingsHtml}`;
     }
     
-    // Навигация
     window.showPage = async (page) => {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
         document.getElementById(`page-${page}`).classList.add('active-page');
